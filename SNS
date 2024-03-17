@@ -1,0 +1,8 @@
+provider "aws" {
+  region = "us-east-1"  # Set your desired region
+}
+
+resource "aws_sns_topic" "example_topic" {
+  name = "example-topic"
+  display_name = "Example Topic"  # Optional display name for the topic
+}
