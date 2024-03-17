@@ -1,0 +1,37 @@
+provider "aws" {
+  region = "us-east-1"  # Set your desired region
+}
+
+resource "aws_lambda_function" "example" {
+  function_name    = "example-lambda"
+  filename         = "lambda_function.zip"  # Path to your Lambda deployment package
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "lambda_function.handler"
+  runtime          = "python3.8"  # Change according to your runtime
+  memory_size      = 128  # Set as needed
+  timeout          = 30   # Set as needed
+}
+
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda_execution_role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"  # Attach basic Lambda execution policy
+}
