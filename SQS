@@ -1,0 +1,12 @@
+provider "aws" {
+  region = "us-east-1"  # Set your desired region
+}
+
+resource "aws_sqs_queue" "example_queue" {
+  name                      = "example-queue"
+  delay_seconds             = 0  # Optional delay before messages become available for consumers
+  max_message_size          = 262144  # Maximum message size in bytes
+  message_retention_seconds = 345600  # Maximum length of time, in seconds, that Amazon SQS retains a message
+  visibility_timeout_seconds = 30  # Default visibility timeout for messages in seconds
+  receive_wait_time_seconds = 0  # Maximum time in seconds that a ReceiveMessage action might wait for a message to arrive in the queue
+}
